@@ -21,7 +21,6 @@
             --border-color: #ecf0f1;
             --border-dash: #bdc3c7;
             --label-color: #000000;
-            /* 套用 Oph Calc 的淺灰色與深色字 */
             --inst-bg: #e5e7eb;  
             --inst-text: #1f2937; 
             --grid-line: #000000;
@@ -37,8 +36,8 @@
             --border-color: #333333;
             --border-dash: #555555;
             --label-color: #ffffff;
-            --inst-bg: #374151;   /* 高對比時：深灰底 */
-            --inst-text: #f9fafb; /* 高對比時：淺色字 */
+            --inst-bg: #374151;   
+            --inst-text: #f9fafb; 
             --grid-line: #ffffff;
             --btn-clear-bg: #424242;
             --btn-clear-text: #ffffff;
@@ -55,20 +54,15 @@
             transition: background-color 0.3s, color 0.3s;
         }
         
-        .container {
-            max-width: 100%;
-            margin: 0 auto;
-            padding: 60px 12px 80px 12px;
-            box-sizing: border-box;
-        }
-        
-        /* 上方懸浮橫幅與按鈕設計 */
+        /* 🚀 橫幅獨立設計：吸附頂端，內部自動適應瀏海/網址列 */
         .nav-header {
-            /* 套用 Oph Calc 的深灰色 (bg-gray-700) */
+            position: sticky;
+            top: 0;
+            z-index: 100;
             background-color: rgba(55, 65, 81, 0.95); 
             backdrop-filter: blur(4px);
-            padding: 12px 16px; 
-            margin: 0 -12px 12px -12px;
+            /* 上方 padding 融合安全領域，左右下維持不變 */
+            padding: calc(12px + env(safe-area-inset-top)) 16px 12px 16px; 
             display: flex;
             justify-content: space-between; 
             align-items: center; 
@@ -78,7 +72,6 @@
             background-color: rgba(31, 41, 55, 0.98);
         }
         
-        /* 左側標題文字 (純白大字) */
         .nav-title {
             font-size: 22px; 
             font-weight: bold;
@@ -88,7 +81,6 @@
             color: #ffffff;
         }
         
-        /* 右側切換按鈕 */
         .contrast-btn {
             width: 140px; 
             text-align: center;
@@ -112,7 +104,14 @@
             border-color: #6b7280;
         }
 
-        /* 衛教提示框 */
+        /* 內容容器：移除 60px 的推擠，回歸正常邊距 */
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 12px 12px 80px 12px;
+            box-sizing: border-box;
+        }
+
         .instruction {
             font-size: 16px;
             color: var(--inst-text);
@@ -122,7 +121,7 @@
             background-color: var(--inst-bg);
             padding: 6px;
             border-radius: 8px;
-            margin-top: calc(5px + env(safe-area-inset-top));
+            margin-top: 0; /* 交由上方 nav-header 處理間距 */
         }
         
         .test-section {
@@ -144,13 +143,13 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        
-        <nav class="nav-header">
-            <div class="nav-title">近距離閱讀測試</div>
-            <button id="contrastBtn" class="contrast-btn" onclick="toggleContrast()">🌓 切換高對比</button>
-        </nav>
+    <!-- 🚀 橫幅移到 container 外面 -->
+    <nav class="nav-header">
+        <div class="nav-title">近距離閱讀測試</div>
+        <button id="contrastBtn" class="contrast-btn" onclick="toggleContrast()">🌓 切換高對比</button>
+    </nav>
 
+    <div class="container">
         <div class="instruction">
             請戴著閱讀用眼鏡(若有)，手機距離眼睛約30公分
         </div>
