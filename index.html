@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>近距離閱讀測試</title>
+    
+    <!-- 強制瀏覽器不要快取舊網頁，盡量去抓取最新版本 -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">    
+
+    <link rel="icon" href="logo_nearreading.jpg">
+    <link rel="apple-touch-icon" href="logo_nearreading.jpg">
+
+    <style>
+        /* 預設白底模式 */
+        :root {
+            --bg-body: #ffffff;
+            --text-main: #000000;
+            --border-color: #ecf0f1;
+            --border-dash: #bdc3c7;
+            --label-color: #000000;
+            /* 套用 Oph Calc 的淺灰色與深色字 */
+            --inst-bg: #e5e7eb;  
+            --inst-text: #1f2937; 
+            --grid-line: #000000;
+            --btn-clear-bg: #e0e0e0;
+            --btn-clear-text: #333333;
+            --symptom-bg: #ffffff; 
+        }
+
+        /* 黑底白字高對比模式 */
+        body.dark-mode {
+            --bg-body: #121212;
+            --text-main: #ffffff;
+            --border-color: #333333;
+            --border-dash: #555555;
+            --label-color: #ffffff;
+            --inst-bg: #374151;   /* 高對比時：深灰底 */
+            --inst-text: #f9fafb; /* 高對比時：淺色字 */
+            --grid-line: #ffffff;
+            --btn-clear-bg: #424242;
+            --btn-clear-text: #ffffff;
+            --symptom-bg: #1a1a1a; 
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.4;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 0 12px 80px 12px;
+            box-sizing: border-box;
+        }
+        
+        /* 上方懸浮橫幅與按鈕設計 */
+        .nav-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            /* 套用 Oph Calc 的深灰色 (bg-gray-700) */
+            background-color: rgba(55, 65, 81, 0.95); 
+            backdrop-filter: blur(4px);
+            padding: 12px 16px; 
+            margin: 0 -12px 12px -12px;
+            display: flex;
+            justify-content: space-between; 
+            align-items: center; 
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+        }
+        body.dark-mode .nav-header {
+            background-color: rgba(31, 41, 55, 0.98);
+        }
+        
+        /* 左側標題文字 (純白大字) */
+        .nav-title {
+            font-size: 22px; 
+            font-weight: bold;
+            color: #ffffff;  
+        }
+        body.dark-mode .nav-title {
+            color: #ffffff;
+        }
+        
+        /* 右側切換按鈕 */
+        .contrast-btn {
+            width: 140px; 
+            text-align: center;
+            padding: 8px 0;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 8px;
+            border: 1px solid #9ca3af;
+            background-color: #ffffff;
+            color: #374151;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .contrast-btn:active {
+            transform: scale(0.95);
+        }
+        body.dark-mode .contrast-btn {
+            background-color: #374151;
+            color: #ffffff;
+            border-color: #6b7280;
+        }
+
+        /* 衛教提示框 */
+        .instruction {
+            font-size: 16px;
+            color: var(--inst-text);
+            margin-bottom: 5px;
+            text-align: center;
+            font-weight: normal;
+            background-color: var(--inst-bg);
+            padding: 6px;
+            border-radius: 8px;
+            margin-top: calc(5px + env(safe-area-inset-top));
+        }
+        
+        .test-section {
+            margin-bottom: 4px; padding-bottom: 4px; border-bottom: 1px dashed var(--border-dash);
+        }
+        .test-section:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        
+        .label-row {
+            display: flex; justify-content: space-between; color: var(--label-color);
+            margin-bottom: 2px; font-weight: normal; 
+        }
+        
+        .text-level-1 { font-size: 32px; font-weight: normal; line-height: 1.3; }
+        .text-level-2 { font-size: 24px; font-weight: normal; line-height: 1.3; }
+        .text-level-3 { font-size: 18px; font-weight: normal; line-height: 1.4; }
+        .text-level-4 { font-size: 14px; font-weight: normal; line-height: 1.4; }
+        .text-level-5 { font-size: 11px; font-weight: normal; line-height: 1.4; }
+        .text-level-6 { font-size: 9px;  font-weight: normal; line-height: 1.5; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+        <nav class="nav-header">
+            <div class="nav-title">近距離閱讀測試</div>
+            <button id="contrastBtn" class="contrast-btn" onclick="toggleContrast()">🌓 切換高對比</button>
+        </nav>
+
+        <div class="instruction">
+            請戴著閱讀用眼鏡(若有)，手機距離眼睛約30公分
+        </div>
+
+        <div class="test-section">
+            <div class="text-level-1 label-row"><span>1</span><span>32px</span></div>
+            <div class="text-level-1">保持良好的用眼習慣</div>
+        </div>
+        <div class="test-section">
+            <div class="text-level-2 label-row"><span>2</span><span>24px</span></div>
+            <div class="text-level-2">閱讀時請保持充足的照明，避免在昏暗環境下看手機</div>
+        </div>
+        <div class="test-section">
+            <div class="text-level-3 label-row"><span>3</span><span>18px</span></div>
+            <div class="text-level-3">長時間使用手機或電腦，容易造成眼睛疲勞與乾澀，建議每用眼三十分鐘，就要休息十分鐘，看看遠方放鬆睫狀肌</div>
+        </div>
+        <div class="test-section">
+            <div class="text-level-4 label-row"><span>4</span><span>14px</span></div>
+            <div class="text-level-4">老花眼是自然老化的現象，主要是因為水晶體彈性逐漸變差，導致近距離對焦困難，配戴合適度數的老花鏡片，能有效改善閱讀品質並減少眼睛疲勞</div>
+        </div>
+        <div class="test-section">
+            <div class="text-level-5 label-row"><span>5</span><span>11px</span></div>
+            <div class="text-level-5">如果您發現即使戴上老花眼鏡，這行字依然模糊不清，建議您回診評估度數及檢查白內障；若看物體時出現扭曲變形或有黑影遮擋，請回診進行眼底檢查</div>
+        </div>
+        <div class="test-section" style="border-bottom: none;">
+            <div class="text-level-6 label-row"><span>6</span><span>9px</span></div>
+            <div class="text-level-6">定期檢查是保護視力關鍵，特別是糖尿病或高血壓患者，更應注意眼底的健康狀況；若眼睛有任何不適，請尋求醫師評估，切勿自行購買市售眼藥水長期點用，以免延誤潛在疾病的治療，甚至因誤用藥物而引發其他的眼睛問題</div>
+        </div>
+    </div>
+
+    <script>
+        function toggleContrast() {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            const btn = document.getElementById('contrastBtn');
+            btn.innerHTML = isDark ? '☀ 切換一般模式' : '🌓 切換高對比';
+        }
+    </script>
+</body>
+</html>
