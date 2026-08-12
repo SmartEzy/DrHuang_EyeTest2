@@ -13,7 +13,6 @@
     <link rel="apple-touch-icon" href="logo_nearreading.jpg">
 
     <style>
-        /* 預設白底模式 */
         :root {
             --bg-body: #ffffff;
             --text-main: #000000;
@@ -28,7 +27,6 @@
             --symptom-bg: #ffffff; 
         }
 
-        /* 黑底白字高對比模式 */
         body.dark-mode {
             --bg-body: #121212;
             --text-main: #ffffff;
@@ -53,17 +51,9 @@
             transition: background-color 0.3s, color 0.3s;
         }
         
-        /* 🚀 橫幅絕對固定設計 */
+        /* 🚀 放棄 sticky/fixed，回歸自然排版，100%不遮擋 */
         .nav-header {
-            position: fixed; /* 改用絕對固定 */
-            top: 0;
-            left: 0;
-            right: 0; /* 左右貼齊螢幕 */
-            z-index: 100;
-            background-color: rgba(55, 65, 81, 0.95); 
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
-            /* 上方 padding 融合安全領域(瀏海) */
+            background-color: #374151; /* 採用 Oph Calc 的深灰實色 */
             padding: calc(12px + env(safe-area-inset-top)) 16px 12px 16px; 
             display: flex;
             justify-content: space-between; 
@@ -72,7 +62,7 @@
             box-sizing: border-box;
         }
         body.dark-mode .nav-header {
-            background-color: rgba(31, 41, 55, 0.98);
+            background-color: #1f2937;
         }
         
         .nav-title {
@@ -107,12 +97,11 @@
             border-color: #6b7280;
         }
 
-        /* 🚀 內容容器：強制預留上方空間，把內容推到橫幅下方 */
+        /* 內容容器：恢復最單純的邊距 */
         .container {
             max-width: 100%;
             margin: 0 auto;
-            /* 預留 70px + 瀏海高度，確保內容絕不被遮擋 */
-            padding: calc(70px + env(safe-area-inset-top)) 12px 80px 12px;
+            padding: 12px 12px 80px 12px;
             box-sizing: border-box;
         }
 
