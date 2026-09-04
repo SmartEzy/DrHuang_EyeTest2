@@ -3,45 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>近距離閱讀測試</title>
+    <title>黃斑部自我檢查</title>
     
     <!-- 🚀 設定加到手機主畫面時的 App 屬性 -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="閱讀測試">
-    <meta name="application-name" content="閱讀測試">
+    <meta name="apple-mobile-web-app-title" content="黃斑部檢查">
+    <meta name="application-name" content="黃斑部檢查">
 
     <!-- 強制瀏覽器不要快取舊網頁，盡量去抓取最新版本 -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">    
 
-    <link rel="icon" href="logo_nearreading.jpg">
-    <link rel="apple-touch-icon" href="logo_nearreading.jpg">
+    <link rel="icon" href="logo_amslergrid.jpg">
+    <link rel="apple-touch-icon" href="logo_amslergrid.jpg">
 
     <style>
         :root {
             --bg-body: #ffffff;
             --text-main: #000000;
             --border-color: #ecf0f1;
-            --border-dash: #bdc3c7;
+            --grid-line: #000000;
+            --symptom-bg: #ffffff; 
             --inst-bg: #e5e7eb;  
             --inst-text: #1f2937; 
-            /* 🚀 數字徽章的顏色（一般模式：深藍） */
-            --badge-bg: #0284c7;
-            --badge-text: #ffffff;
+            /* 清除按鈕配色：淺紅底、深紅字、微紅邊框 */
+            --btn-clear-bg: #fee2e2;
+            --btn-clear-text: #b91c1c;
+            --btn-clear-border: #fca5a5;
+            /* 標記按鈕配色：淺藍底、深藍字 */
+            --btn-draw-bg: #e0f2fe;
+            --btn-draw-text: #0284c7;
+            --btn-draw-border: #bae6fd;
+            --btn-draw-active-bg: #0284c7;
+            --btn-draw-active-text: #ffffff;
         }
 
         body.dark-mode {
             --bg-body: #121212;
             --text-main: #ffffff;
             --border-color: #333333;
-            --border-dash: #555555;
+            --grid-line: #ffffff;
+            --symptom-bg: #1a1a1a; 
             --inst-bg: #374151;   
             --inst-text: #f9fafb; 
-            /* 🚀 數字徽章的顏色（高對比模式：亮藍） */
-            --badge-bg: #38bdf8;
-            --badge-text: #0f172a;
+            /* 清除按鈕配色(高對比)：暗紅底、淺紅字、深紅邊框 */
+            --btn-clear-bg: #7f1d1d;
+            --btn-clear-text: #fecaca;
+            --btn-clear-border: #991b1b;
+            /* 標記按鈕配色(高對比)：暗藍底、淺藍字 */
+            --btn-draw-bg: #0f172a;
+            --btn-draw-text: #38bdf8;
+            --btn-draw-border: #0284c7;
+            --btn-draw-active-bg: #38bdf8;
+            --btn-draw-active-text: #0f172a;
         }
 
         body {
@@ -102,7 +118,7 @@
         .container {
             max-width: 100%;
             margin: 0 auto;
-            padding: 12px 12px 80px 12px;
+            padding: 12px 12px 80px 12px; 
             box-sizing: border-box;
         }
 
@@ -118,51 +134,193 @@
             margin-top: 0; 
         }
         
-        .test-section {
-            margin-bottom: 6px; 
-            padding-bottom: 6px; 
-            border-bottom: 1px dashed var(--border-dash);
-        }
-        .test-section:last-child { 
-            border-bottom: none; 
-            margin-bottom: 0; 
-            padding-bottom: 0; 
-        }
-        
-        /* 🚀 移除原本置右對齊的 px，改為純粹靠左對齊 */
-        .label-row {
+        /* 🚀 修改對齊方式：讓右側按鈕底部與左側文字底部齊平 */
+        .instruction-and-clear-header {
             display: flex; 
-            justify-content: flex-start; 
-            align-items: center;
-            margin-bottom: 6px; 
+            justify-content: space-between; 
+            align-items: flex-end; 
+            margin-bottom: 8px; 
+            gap: 8px; 
         }
 
-        /* 🚀 新增的 1~6 數字圓形徽章樣式 */
-        .level-badge {
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-            width: 26px;
-            height: 26px;
-            border-radius: 50%; /* 圓形設計 */
-            background-color: var(--badge-bg);
-            color: var(--badge-text);
-            font-size: 14px;
-            font-weight: bold;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+        .amsler-instruction {
+            flex: 1; 
+        }
+        .amsler-instruction ol { 
+            padding-left: 20px; 
+            margin: 0; 
+            font-size: 15px; 
+        }
+        .amsler-instruction li { 
+            margin-bottom: 2px; 
+        }
+        /* 確保最後一行沒有多餘底距，完美對齊按鈕 */
+        .amsler-instruction li:last-child {
+            margin-bottom: 0;
         }
         
-        .text-level-1 { font-size: 32px; font-weight: normal; line-height: 1.3; }
-        .text-level-2 { font-size: 24px; font-weight: normal; line-height: 1.3; }
-        .text-level-3 { font-size: 18px; font-weight: normal; line-height: 1.4; }
-        .text-level-4 { font-size: 14px; font-weight: normal; line-height: 1.4; }
-        .text-level-5 { font-size: 11px; font-weight: normal; line-height: 1.4; }
-        .text-level-6 { font-size: 9px;  font-weight: normal; line-height: 1.5; }
+        .amsler-grid-wrapper { width: 100%; max-width: 600px; margin: 0 auto 12px auto; }
+        
+        .amsler-grid {
+            width: 100%; aspect-ratio: 1 / 1; position: relative; border: solid var(--grid-line); border-width: 1px 2px 2px 1px;
+            background-image: 
+                repeating-linear-gradient(to right, var(--grid-line) 0, var(--grid-line) 1px, transparent 1px, transparent 5%),
+                repeating-linear-gradient(to bottom, var(--grid-line) 0, var(--grid-line) 1px, transparent 1px, transparent 5%);
+        }
+        
+        .amsler-dot {
+            position: absolute; top: 50%; left: 50%; width: 8px; height: 8px;
+            background-color: var(--grid-line); border-radius: 50%; transform: translate(-50%, -50%); z-index: 1;
+        }
+        #drawCanvas {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10;
+            touch-action: none; cursor: crosshair;
+        }
+        
+        /* 🚀 按鈕群組：改為左右排列 */
+        .action-buttons {
+            display: flex;
+            flex-direction: row; 
+            gap: 8px; 
+            flex-shrink: 0; 
+        }
+
+        .clear-btn {
+            display: block; 
+            width: auto; 
+            margin: 0; 
+            padding: 6px 12px; /* 微調內距適應兩行字 */
+            background-color: var(--btn-clear-bg); 
+            color: var(--btn-clear-text); 
+            border: 1px solid var(--btn-clear-border);
+            border-radius: 8px; 
+            font-size: 14px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            text-align: center;
+            line-height: 1.2; /* 🚀 縮小一點行高，讓兩行文字更緊湊 */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: all 0.2s ease;
+            box-sizing: border-box;
+        }
+        .clear-btn:active {
+            transform: scale(0.95);
+            opacity: 0.8;
+        }
+
+        .toggle-draw-btn {
+            display: block; 
+            width: auto; 
+            margin: 0; 
+            padding: 6px 12px; 
+            background-color: var(--btn-draw-bg); 
+            color: var(--btn-draw-text); 
+            border: 1px solid var(--btn-draw-border);
+            border-radius: 8px; 
+            font-size: 14px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            text-align: center;
+            line-height: 1.2; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: all 0.2s ease;
+            box-sizing: border-box;
+        }
+        .toggle-draw-btn.active {
+            background-color: var(--btn-draw-active-bg);
+            color: var(--btn-draw-active-text);
+            border-color: transparent;
+        }
+        .toggle-draw-btn:active {
+            transform: scale(0.95);
+            opacity: 0.8;
+        }
+
+        .symptom-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center; 
+            margin: 0 auto; 
+            width: 100%;
+            max-width: 500px; 
+            box-sizing: border-box;
+            gap: 10px; 
+        }
+        
+        .symptom-container {
+            width: 100%;
+            display: flex; 
+            flex-direction: row; 
+            justify-content: space-between; 
+            align-items: stretch; 
+            gap: 8px; 
+        }
+        .symptom-item { 
+            flex: 1; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+        
+        .symptom-main-label {
+            width: 100%;
+            aspect-ratio: 1 / 1; 
+            background-color: #6b7280; 
+            color: #ffffff;            
+            border-radius: 8px; 
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: clamp(11px, 3.5vw, 14px); 
+            font-weight: bold;
+            line-height: 1.5;
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            box-sizing: border-box;
+        }
+
+        .symptom-card {
+            position: relative; 
+            background-color: var(--symptom-bg);
+            border: 1.2px solid var(--grid-line);
+            border-radius: 0px;
+            padding: 2px;
+            width: 100%; 
+            aspect-ratio: 1 / 1; 
+            box-sizing: border-box;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .symptom-label { 
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            font-size: 10px; 
+            font-weight: bold; 
+            color: var(--text-main); 
+            background-color: var(--symptom-bg); 
+            padding: 2px 4px;
+            border-radius: 4px;
+            z-index: 5;
+            line-height: 1;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.2); 
+        }
+        .symptom-item svg { 
+            width: 100%; 
+            height: auto; 
+            display: block;
+            color: var(--grid-line); 
+        }
     </style>
 </head>
 <body>
     <nav class="nav-header">
-        <div class="nav-title">近距離閱讀測試</div>
+        <div class="nav-title">黃斑部自我檢查</div>
         <button id="contrastBtn" class="contrast-btn" onclick="toggleContrast()">🌓 切換高對比</button>
     </nav>
 
@@ -170,30 +328,106 @@
         <div class="instruction">
             請戴著閱讀用眼鏡(若有)，手機距離眼睛約30公分
         </div>
+        
+        <div class="instruction-and-clear-header">
+            <div class="amsler-instruction">
+                <ol>
+                    <li><strong>先遮一眼</strong>，用另一眼注視格子的<strong>中心黑點</strong></li> 
+                    <li>查看是否發現<strong>扭曲、模糊</strong>或<strong>黑影</strong>區域</li>
+                    <li>按<strong style="color: var(--btn-draw-text);">開始標記</strong>可圈選，<strong style="color: var(--btn-clear-text);">清除標記</strong>可清除</li>
+                    <li><strong>換遮另一眼</strong>，重複以上步驟</li>
+                </ol>
+            </div>
+            
+            <div class="action-buttons">
+                <!-- 🚀 在按鈕文字中間插入 <br> 強制斷行 -->
+                <button id="toggleDrawBtn" class="toggle-draw-btn">開始<br>標記</button>
+                <button id="clearCanvasBtn" class="clear-btn">清除<br>標記</button>
+            </div>
+        </div>
+        
+        <div class="amsler-grid-wrapper">
+            <div class="amsler-grid">
+                <svg style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:0; pointer-events:none;">
+                    <line x1="0" y1="0" x2="100%" y2="100%" stroke="currentColor" stroke-width="0.8"/>
+                    <line x1="0" y1="100%" x2="100%" y2="0" stroke="currentColor" stroke-width="0.8"/>
+                </svg>
+                <div class="amsler-dot"></div>
+                <canvas id="drawCanvas"></canvas>
+            </div>
+        </div>
 
-        <div class="test-section">
-            <div class="label-row"><span class="level-badge">1</span></div>
-            <div class="text-level-1">保持良好的用眼習慣</div>
-        </div>
-        <div class="test-section">
-            <div class="label-row"><span class="level-badge">2</span></div>
-            <div class="text-level-2">閱讀時請保持充足的照明，避免在昏暗環境下看手機</div>
-        </div>
-        <div class="test-section">
-            <div class="label-row"><span class="level-badge">3</span></div>
-            <div class="text-level-3">長時間使用手機或電腦，容易造成眼睛疲勞與乾澀，建議每用眼三十分鐘，就要休息十分鐘，看看遠方放鬆睫狀肌</div>
-        </div>
-        <div class="test-section">
-            <div class="label-row"><span class="level-badge">4</span></div>
-            <div class="text-level-4">老花眼是自然老化的現象，主要是因為水晶體彈性逐漸變差，導致近距離對焦困難，配戴合適度數的老花鏡片，能有效改善閱讀品質並減少眼睛疲勞</div>
-        </div>
-        <div class="test-section">
-            <div class="label-row"><span class="level-badge">5</span></div>
-            <div class="text-level-5">如果您發現即使戴上老花眼鏡，這行字依然模糊不清，建議您回診評估度數及檢查白內障；若看物體時出現扭曲變形或有黑影遮擋，請回診進行眼底檢查</div>
-        </div>
-        <div class="test-section" style="border-bottom: none;">
-            <div class="label-row"><span class="level-badge">6</span></div>
-            <div class="text-level-6">定期檢查是保護視力關鍵，特別是糖尿病或高血壓患者，更應注意眼底的健康狀況；若眼睛有任何不適，請尋求醫師評估，切勿自行購買市售眼藥水長期點用，以免延誤潛在疾病的治療，甚至因誤用藥物而引發其他的眼睛問題</div>
+        <div class="symptom-wrapper">
+            <div class="symptom-container">
+
+                <div class="symptom-item">
+                    <div class="symptom-main-label">
+                        <span>異常症狀</span>
+                        <span>示意圖</span>
+                    </div>
+                </div>
+
+                <div class="symptom-item">
+                    <div class="symptom-card">
+                        <div class="symptom-label">扭曲</div>
+                        <svg viewBox="0 0 60 60" preserveAspectRatio="none">
+                            <g stroke="currentColor" fill="none" stroke-width="0.5">
+                                <path d="M6,0 L6,18 C6,22 7,25 8,28 C9,31 9,34 8,37 C7,40 6,43 6,46 L6,60"/>
+                                <path d="M12,0 L12,16 C12,21 14,24 16,27 C18,30 18,33 16,36 C14,39 12,42 12,46 L12,60"/>
+                                <path d="M18,0 L18,15 C18,20 20,23 23,26 C26,29 27,32 25,35 C23,38 20,40 18,44 C17,47 18,50 18,60"/>
+                                <path d="M24,0 L24,14 C24,19 26,25 28,26 C30,29 29,32 27.5,35 C26,39 24,44 24,60"/>
+                                <path d="M30,0 L30,14 C30,19 30.5,23 31,27 C31.5,30 31,34 30.5,37 C30,41 30,45 30,60"/>
+                                <path d="M36,0 L36,16 C36,20 35,23 34,26 C33,29 34,32 36,35 C38,38 39,41 38,45 C37,49 36,53 36,60"/>
+                                <path d="M42,0 L42,17 C42,21 40,24 39,27 C38,30 39,33 41,36 C43,39 44,42 43,46 C42,50 42,54 42,60"/>
+                                <path d="M48,0 L48,19 C48,23 46,26 45,29 C44,32 45,35 47,38 C49,41 49,44 48,47 L48,60"/>
+                                <path d="M54,0 L54,20 C54,24 53,27 52,30 C51,33 52,36 53,39 C54,42 54,45 54,48 L54,60"/>
+                                <path d="M0,6 L17,6 C22,6 26,7 30,8 C34,9 39,8 44,7 C49,6 54,6 60,6"/>
+                                <path d="M0,12 L16,12 C21,12 25,14 29,15 C33,16 38,14 43,13 C49,12 54,12 60,12"/>
+                                <path d="M0,18 L15,18 C20,18 24,19 28,21 C32,23 36,22 40,20 C45,18 51,18 60,18"/>
+                                <path d="M0,24 L14,24 C19,24 23,26 27,28 C31,30 35,29 39,27 C44,24 51,24 60,24"/>
+                                <path d="M0,30 L14,30 C19,30 23,30 27,33 C30,34 33,32 36,31 C40,29 46,29 52,30 L60,30"/>
+                                <path d="M0,36 L15,36 C20,36 24,36 27,35 C30,35 33,37 36,36 C40,38 44,38 48,37 C53,36 56,36 60,36"/>
+                                <path d="M0,42 L14,42 C19,42 23,40 27,39 C30,38 33,39 36,41 C40,44 44,44 48,42 C53,41 57,42 60,42"/>
+                                <path d="M0,48 L15,48 C20,48 24,45 27,43 C30,42 33,43 36,46 C40,49 44,49 48,48 C53,47 57,48 60,48"/>
+                                <path d="M0,54 L16,54 C21,54 25,52 29,51 C33,50 37,52 41,53 C46,55 52,54 60,54"/>
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="symptom-item">
+                    <div class="symptom-card">
+                        <div class="symptom-label">模糊</div>
+                        <svg viewBox="0 0 60 60" preserveAspectRatio="none">
+                            <defs>
+                                <filter id="white-blur"><feGaussianBlur stdDeviation="4"/></filter>
+                            </defs>
+                            <g stroke="currentColor" fill="none" stroke-width="0.5">
+                                <path d="M6,0 L6,60 M12,0 L12,60 M18,0 L18,60 M24,0 L24,60 M30,0 L30,60 M36,0 L36,60 M42,0 L42,60 M48,0 L48,60 M54,0 L54,60"/>
+                                <path d="M0,6 L60,6 M0,12 L60,12 M0,18 L60,18 M0,24 L60,24 M0,30 L60,30 M0,36 L60,36 M0,42 L60,42 M0,48 L60,48 M0,54 L60,54"/>
+                            </g>
+                            <circle cx="38" cy="22" r="18" fill="var(--bg-body)" opacity="0.9" filter="url(#white-blur)"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="symptom-item">
+                    <div class="symptom-card">
+                        <div class="symptom-label">黑影</div>
+                        <svg viewBox="0 0 60 60" preserveAspectRatio="none">
+                            <defs>
+                                <filter id="shadow-blur"><feGaussianBlur stdDeviation="2.5"/></filter>
+                            </defs>
+                            <g stroke="currentColor" fill="none" stroke-width="0.5">
+                                <path d="M6,0 L6,60 M12,0 L12,60 M18,0 L18,60 M24,0 L24,60 M30,0 L30,60 M36,0 L36,60 M42,0 L42,60 M48,0 L48,60 M54,0 L54,60"/>
+                                <path d="M0,6 L60,6 M0,12 L60,12 M0,18 L60,18 M0,24 L60,24 M0,30 L60,30 M0,36 L60,36 M0,42 L60,42 M0,48 L60,48 M0,54 L60,54"/>
+                            </g>
+                            <path d="M 28 15 C 42 14 50 25 45 38 C 40 48 28 50 18 40 C 10 30 14 18 28 15 Z" fill="#111111" filter="url(#shadow-blur)" opacity="0.95"/>
+                        </svg>
+                    </div>
+                </div>
+
+            </div>
         </div>
     </div>
 
@@ -204,6 +438,97 @@
             const btn = document.getElementById('contrastBtn');
             btn.innerHTML = isDark ? '☀ 切換一般模式' : '🌓 切換高對比';
         }
+
+        const canvas = document.getElementById('drawCanvas');
+        const ctx = canvas.getContext('2d');
+        const clearBtn = document.getElementById('clearCanvasBtn');
+        const toggleDrawBtn = document.getElementById('toggleDrawBtn');
+        
+        let isDrawing = false;
+        let isDrawModeEnabled = false; 
+
+        // 預設讓畫布「穿透」，不會阻擋使用者滑動
+        canvas.style.pointerEvents = 'none';
+
+        function resizeCanvas() {
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+            ctx.strokeStyle = '#ff3333'; 
+            ctx.lineWidth = 3;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+        }
+
+        window.addEventListener('load', resizeCanvas);
+        window.addEventListener('resize', resizeCanvas);
+
+        toggleDrawBtn.addEventListener('click', function() {
+            isDrawModeEnabled = !isDrawModeEnabled;
+            if (isDrawModeEnabled) {
+                this.classList.add('active');
+                // 🚀 切換時也要維持斷行
+                this.innerHTML = '結束<br>標記';
+                canvas.style.pointerEvents = 'auto'; 
+            } else {
+                this.classList.remove('active');
+                // 🚀 切換時也要維持斷行
+                this.innerHTML = '開始<br>標記';
+                canvas.style.pointerEvents = 'none'; 
+                stopDrawing(); 
+            }
+        });
+
+        function getPointerPos(e) {
+            const rect = canvas.getBoundingClientRect();
+            let clientX, clientY;
+            if (e.touches && e.touches.length > 0) {
+                clientX = e.touches[0].clientX;
+                clientY = e.touches[0].clientY;
+            } else {
+                clientX = e.clientX;
+                clientY = e.clientY;
+            }
+            return {
+                x: clientX - rect.left,
+                y: clientY - rect.top
+            };
+        }
+
+        function startDrawing(e) {
+            if (!isDrawModeEnabled) return; 
+            e.preventDefault(); 
+            isDrawing = true;
+            const pos = getPointerPos(e);
+            ctx.beginPath();
+            ctx.moveTo(pos.x, pos.y);
+        }
+
+        function draw(e) {
+            if (!isDrawing || !isDrawModeEnabled) return;
+            e.preventDefault(); 
+            const pos = getPointerPos(e);
+            ctx.lineTo(pos.x, pos.y);
+            ctx.stroke();
+        }
+
+        function stopDrawing(e) {
+            if (e) e.preventDefault();
+            isDrawing = false;
+        }
+
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mouseout', stopDrawing);
+
+        canvas.addEventListener('touchstart', startDrawing, { passive: false });
+        canvas.addEventListener('touchmove', draw, { passive: false });
+        canvas.addEventListener('touchend', stopDrawing, { passive: false });
+        canvas.addEventListener('touchcancel', stopDrawing, { passive: false });
+
+        clearBtn.addEventListener('click', function() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        });
     </script>
 </body>
 </html>
